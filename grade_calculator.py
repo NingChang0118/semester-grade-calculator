@@ -32,3 +32,14 @@ class Course:
                 remaining += item.weight
 
         return remaining
+    
+    def required_average_score(self) -> float:
+        current = self.current_score()
+        remaining = self.remaining_weight()
+
+        if remaining <= 0:
+            return 0.0
+
+        required = (self.target_score - current) / (remaining / 100)
+
+        return required
