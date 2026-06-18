@@ -71,3 +71,20 @@ class Course:
 
         return "possible"
     
+    def status_message(self) -> str:
+        status = self.grade_status()
+
+        if status == "achieved":
+            return "恭喜！你已經達成目標分數。"
+
+        if status == "failed":
+            return "所有成績項目已完成，但尚未達成目標分數。"
+
+        if status == "impossible":
+            return "剩餘項目所需分數超過 100 分，目前無法達成目標。"
+
+        if status == "danger":
+            return "仍有機會達成目標，但剩餘項目需要較高分數。"
+
+        return "目前進度正常，持續努力即可達成目標。"
+
