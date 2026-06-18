@@ -88,3 +88,5 @@ class Course:
 
         return "目前進度正常，持續努力即可達成目標。"
 
+    def is_weight_valid(self) -> bool:
+        return self.total_weight() == 100
