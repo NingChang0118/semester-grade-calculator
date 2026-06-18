@@ -24,3 +24,11 @@ class Course:
 
         return total
 
+    def remaining_weight(self) -> float:
+        remaining = 0.0
+
+        for item in self.items:
+            if not item.completed:
+                remaining += item.weight
+
+        return remaining
