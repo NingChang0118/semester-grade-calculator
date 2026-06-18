@@ -38,7 +38,7 @@ class Course:
         remaining = 0.0
 
         for item in self.items:
-            if not item.completed:
+            if not item.completed and not item.is_bonus:
                 remaining += item.weight
 
         return remaining
