@@ -53,3 +53,21 @@ class Course:
         required = (self.target_score - current) / (remaining / 100)
 
         return required
+    
+    def grade_status(self) -> str:
+        required = self.required_average_score()
+
+        if self.current_score() >= self.target_score:
+            return "achieved"
+
+        if self.remaining_weight() <= 0:
+            return "failed"
+
+        if required > 100:
+            return "impossible"
+
+        if required >= 80:
+            return "danger"
+
+        return "possible"
+    
