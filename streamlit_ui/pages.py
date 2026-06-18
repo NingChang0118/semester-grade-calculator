@@ -125,7 +125,7 @@ def create_course_page() -> None:
         with col4:
             semester = st.selectbox(
                 "學期",
-                ["未設定", "上學期", "下學期", "暑修"],
+                ["未設定", "第一學期", "第二學期", "暑修"],
                 key="new_semester"
             )
 
