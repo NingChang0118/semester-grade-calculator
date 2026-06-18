@@ -15,6 +15,9 @@ class Course:
     name: str
     target_score: float
     items: list[GradeItem]
+    academic_year: str = "未設定"
+    semester: str = "未設定"
+
 
     def total_weight(self) -> float:
         total = 0.0

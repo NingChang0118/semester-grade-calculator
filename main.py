@@ -1,57 +1,44 @@
-from grade_calculator import Course, GradeItem
-from storage import save_course
-import grade_calculator
-print(grade_calculator.__file__)
-
-def create_course() -> Course:
-    course_name = input("請輸入課程名稱：")
-    target_score = float(input("請輸入目標分數："))
-
-    item_count = int(input("請輸入成績項目數量："))
-
-    items = []
-
-    for i in range(item_count):
-        print(f"\n--- 成績項目 {i + 1} ---")
-
-        name = input("項目名稱：")
-        weight = float(input("占比（%）："))
-
-        completed = input("是否已完成（y/n）：").lower() == "y"
-        is_bonus = input("是否為加分項目（y/n）：").lower() == "y"
-
-        score = None
-
-        if completed:
-            score = float(input("成績："))
-
-        items.append(
-            GradeItem(
-                name=name,
-                weight=weight,
-                score=score,
-                completed=completed,
-                is_bonus=is_bonus
-            )
-        )
-
-    return Course(
-        name=course_name,
-        target_score=target_score,
-        items=items
-    )
+from course_manager import (
+    add_course,
+    delete_course,
+    edit_course,
+    list_courses,
+    show_loaded_courses
+)
 
 
-course = create_course()
+def main() -> None:
+    show_loaded_courses()
 
-if not course.is_weight_valid():
-    print(f"錯誤：成績占比總和應為 100%，目前為 {course.total_weight():.2f}%")
-else:
-    print(f"\n課程名稱：{course.name}")
-    print(f"目前加權分數：{course.current_score():.2f}")
-    print(f"剩餘占比：{course.remaining_weight():.2f}%")
-    print(f"剩餘項目平均需要：{course.required_average_score():.2f} 分")
-    print(f"提醒：{course.status_message()}")
+    while True:
+        print("\n=== 學期成績計算器 ===")
+        print("1. 查看課程")
+        print("2. 新增課程")
+        print("3. 編輯課程")
+        print("4. 刪除課程")
+        print("5. 離開程式")
 
-save_course(course)
-print("課程資料已儲存。")
+        choice = input("請輸入選項：")
+
+        if choice == "1":
+            list_courses()
+
+        elif choice == "2":
+            add_course()
+
+        elif choice == "3":
+            edit_course()
+
+        elif choice == "4":
+            delete_course()
+
+        elif choice == "5":
+            print("感謝使用！")
+            break
+
+        else:
+            print("無效選項，請重新輸入。")
+
+
+if __name__ == "__main__":
+    main()

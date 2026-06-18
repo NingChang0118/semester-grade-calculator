@@ -1,0 +1,59 @@
+[
+    {
+        "name": "離散數學",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "items": [
+            {
+                "name": "期中考",
+                "weight": 30.0,
+                "score": 45.0,
+                "completed": true,
+                "is_bonus": false
+            },
+            {
+                "name": "期末考",
+                "weight": 30.0,
+                "score": null,
+                "completed": false,
+                "is_bonus": false
+            },
+            {
+                "name": "作業1",
+                "weight": 10.0,
+                "score": 75.0,
+                "completed": true,
+                "is_bonus": false
+            },
+            {
+                "name": "作業2",
+                "weight": 10.0,
+                "score": null,
+                "completed": false,
+                "is_bonus": false
+            },
+            {
+                "name": "小考1",
+                "weight": 10.0,
+                "score": 46.0,
+                "completed": true,
+                "is_bonus": false
+            },
+            {
+                "name": "小考2",
+                "weight": 10.0,
+                "score": 62.0,
+                "completed": true,
+                "is_bonus": false
+            },
+            {
+                "name": "平時成績",
+                "weight": 15.0,
+                "score": null,
+                "completed": false,
+                "is_bonus": true
+            }
+        ]
+    }
+]

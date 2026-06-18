@@ -11,6 +11,8 @@ def course_to_dict(course: Course) -> dict:
     return {
         "name": course.name,
         "target_score": course.target_score,
+        "academic_year": course.academic_year,
+        "semester": course.semester,
         "items": [
             {
                 "name": item.name,
@@ -24,16 +26,52 @@ def course_to_dict(course: Course) -> dict:
     }
 
 
-def save_course(course: Course) -> None:
+def dict_to_course(course_data: dict) -> Course:
+    items = []
+
+    for item_data in course_data["items"]:
+        items.append(GradeItem(**item_data))
+
+    return Course(
+        name=course_data["name"],
+        target_score=course_data["target_score"],
+        items=items,
+        academic_year=course_data.get("academic_year", "未設定"),
+        semester=course_data.get("semester", "未設定")
+    )
+
+
+def load_courses() -> list[Course]:
+    if not DATA_FILE.exists():
+        return []
+
+    if DATA_FILE.stat().st_size == 0:
+        return []
+
+    with DATA_FILE.open("r", encoding="utf-8") as file:
+        courses_data = json.load(file)
+
+    courses = []
+
+    for course_data in courses_data:
+        courses.append(dict_to_course(course_data))
+
+    return courses
+
+
+def save_courses(courses: list[Course]) -> None:
     DATA_FILE.parent.mkdir(exist_ok=True)
 
-    if DATA_FILE.exists():
-        with DATA_FILE.open("r", encoding="utf-8") as file:
-            courses = json.load(file)
-    else:
-        courses = []
-
-    courses.append(course_to_dict(course))
-
     with DATA_FILE.open("w", encoding="utf-8") as file:
-        json.dump(courses, file, ensure_ascii=False, indent=4)
+        json.dump(
+            [course_to_dict(course) for course in courses],
+            file,
+            ensure_ascii=False,
+            indent=4
+        )
+
+
+def save_course(course: Course) -> None:
+    courses = load_courses()
+    courses.append(course)
+    save_courses(courses)
