@@ -7,6 +7,7 @@ class GradeItem:
     weight: float
     score: float | None = None
     completed: bool = False
+    is_bonus: bool = False
 
 
 @dataclass
@@ -14,6 +15,15 @@ class Course:
     name: str
     target_score: float
     items: list[GradeItem]
+
+    def total_weight(self) -> float:
+        total = 0.0
+
+        for item in self.items:
+            if not item.is_bonus:
+                total += item.weight
+
+        return total
 
     def current_score(self) -> float:
         total = 0.0
