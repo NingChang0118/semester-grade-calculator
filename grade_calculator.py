@@ -14,3 +14,13 @@ class Course:
     name: str
     target_score: float
     items: list[GradeItem]
+
+    def current_score(self) -> float:
+        total = 0.0
+
+        for item in self.items:
+            if item.completed and item.score is not None:
+                total += item.score * (item.weight / 100)
+
+        return total
+
