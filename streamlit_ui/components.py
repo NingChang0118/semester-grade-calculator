@@ -18,14 +18,19 @@ def render_hero() -> None:
 def show_course_summary(course: Course) -> None:
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric("目標分數", f"{course.target_score:.2f}")
-    col2.metric("目前加權分數", f"{course.current_score():.2f}")
-    col3.metric("總占比", f"{course.total_weight():.2f}%")
+    col1.metric("學分", f"{course.credits:.1f}")
+    col2.metric("目標分數", f"{course.target_score:.2f}")
+    col3.metric("目前加權分數", f"{course.current_score():.2f}")
     col4.metric("剩餘占比", f"{course.remaining_weight():.2f}%")
 
-    st.metric(
-        "剩餘項目平均需要",
-        f"{course.required_average_score():.2f} 分"
+    col5, col6, col7, col8 = st.columns(4)
+
+    col5.metric("總占比", f"{course.total_weight():.2f}%")
+    col6.metric("等第", course.letter_grade())
+    col7.metric("GPA 點數", f"{course.grade_point():.1f}")
+    col8.metric(
+        "剩餘平均",
+        f"{course.required_average_score():.2f}"
     )
 
     st.info(course.status_message())

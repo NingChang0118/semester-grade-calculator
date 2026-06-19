@@ -13,6 +13,7 @@ def course_to_dict(course: Course) -> dict:
         "target_score": course.target_score,
         "academic_year": course.academic_year,
         "semester": course.semester,
+        "credits": course.credits,
         "items": [
             {
                 "name": item.name,
@@ -37,7 +38,8 @@ def dict_to_course(course_data: dict) -> Course:
         target_score=course_data["target_score"],
         items=items,
         academic_year=course_data.get("academic_year", "未設定"),
-        semester=course_data.get("semester", "未設定")
+        semester=course_data.get("semester", "未設定"),
+        credits=course_data.get("credits", 0.0)
     )
 
 

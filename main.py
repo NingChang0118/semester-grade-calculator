@@ -3,6 +3,7 @@ from course_manager import (
     delete_course,
     edit_course,
     list_courses,
+    show_gpa_summary,
     show_loaded_courses
 )
 
@@ -16,7 +17,8 @@ def main() -> None:
         print("2. 新增課程")
         print("3. 編輯課程")
         print("4. 刪除課程")
-        print("5. 離開程式")
+        print("5. 查看 GPA 統計")
+        print("6. 離開程式")
 
         choice = input("請輸入選項：")
 
@@ -33,6 +35,9 @@ def main() -> None:
             delete_course()
 
         elif choice == "5":
+            show_gpa_summary()
+
+        elif choice == "6":
             print("感謝使用！")
             break
 

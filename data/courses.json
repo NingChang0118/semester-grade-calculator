@@ -4,6 +4,7 @@
         "target_score": 60.0,
         "academic_year": "114",
         "semester": "第二學期",
+        "credits": 3.0,
         "items": [
             {
                 "name": "期中考",
@@ -61,11 +62,156 @@
         "target_score": 60.0,
         "academic_year": "114",
         "semester": "第一學期",
+        "credits": 2.0,
         "items": [
             {
                 "name": "總成績",
                 "weight": 100.0,
                 "score": 83.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "微積分",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 3.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 60.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "普通物理",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 3.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 67.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "線性代數",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 3.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 68.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "國文",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 2.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 84.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "英文",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 1.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 90.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "英文聽講",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 1.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 90.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "嵌入式系統",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 1.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 99.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "宗教哲學",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 2.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 85.0,
+                "completed": true,
+                "is_bonus": false
+            }
+        ]
+    },
+    {
+        "name": "計算機概論",
+        "target_score": 60.0,
+        "academic_year": "114",
+        "semester": "第一學期",
+        "credits": 3.0,
+        "items": [
+            {
+                "name": "總成績",
+                "weight": 100.0,
+                "score": 71.0,
                 "completed": true,
                 "is_bonus": false
             }

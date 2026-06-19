@@ -17,7 +17,7 @@ class Course:
     items: list[GradeItem]
     academic_year: str = "未設定"
     semester: str = "未設定"
-
+    credits: float = 0.0
 
     def total_weight(self) -> float:
         total = 0.0
@@ -45,7 +45,7 @@ class Course:
                 remaining += item.weight
 
         return remaining
-    
+
     def required_average_score(self) -> float:
         current = self.current_score()
         remaining = self.remaining_weight()
@@ -56,7 +56,7 @@ class Course:
         required = (self.target_score - current) / (remaining / 100)
 
         return required
-    
+
     def grade_status(self) -> str:
         required = self.required_average_score()
 
@@ -73,7 +73,7 @@ class Course:
             return "danger"
 
         return "possible"
-    
+
     def status_message(self) -> str:
         status = self.grade_status()
 
@@ -93,3 +93,60 @@ class Course:
 
     def is_weight_valid(self) -> bool:
         return self.total_weight() == 100
+
+    def final_score(self) -> float:
+        return self.current_score()
+
+    def letter_grade(self) -> str:
+        score = self.final_score()
+
+        if score >= 95:
+            return "A+"
+
+        if score >= 90:
+            return "A"
+
+        if score >= 80:
+            return "A-"
+
+        if score >= 77:
+            return "B+"
+
+        if score >= 73:
+            return "B"
+
+        if score >= 70:
+            return "B-"
+
+        if score >= 67:
+            return "C+"
+
+        if score >= 63:
+            return "C"
+
+        if score >= 60:
+            return "C-"
+
+        return "F"
+
+    def grade_point(self) -> float:
+        grade = self.letter_grade()
+
+        grade_points = {
+            "A+": 4.0,
+            "A": 4.0,
+            "A-": 4.0,
+            "B+": 3.67,
+            "B": 3.33,
+            "B-": 3.00,
+            "C+": 2.67,
+            "C": 2.33,
+            "C-": 2.00,
+            "F": 0.00,
+        }
+
+        return grade_points[grade]
+        return grade_points[grade]
+
+    def weighted_grade_points(self) -> float:
+        return self.grade_point() * self.credits

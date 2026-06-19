@@ -296,3 +296,38 @@ def edit_course() -> None:
             print("無效選項，請重新輸入。")
 
 
+def show_gpa_summary() -> None:
+    courses = load_courses()
+
+    if not courses:
+        print("目前沒有已儲存課程。")
+        return
+
+    total_credits = 0.0
+    total_weighted_grade_points = 0.0
+
+    print("\n=== GPA 統計 ===")
+
+    for course in courses:
+        if course.credits <= 0:
+            continue
+
+        total_credits += course.credits
+        total_weighted_grade_points += course.weighted_grade_points()
+
+        print(f"\n課程：{course.name}")
+        print(f"學分：{course.credits}")
+        print(f"目前分數：{course.final_score():.2f}")
+        print(f"等第：{course.letter_grade()}")
+        print(f"GPA 點數：{course.grade_point():.1f}")
+
+    if total_credits <= 0:
+        print("目前沒有可計算 GPA 的課程，請先設定課程學分。")
+        return
+
+    semester_gpa = total_weighted_grade_points / total_credits
+
+    print("\n--- 總結 ---")
+    print(f"總學分：{total_credits}")
+    print(f"目前 GPA：{semester_gpa:.2f}")
+

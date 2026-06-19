@@ -56,6 +56,10 @@ def validate_course(course: Course) -> bool:
         st.error("學期不能空白。")
         return False
 
+    if course.credits < 0:
+        st.error("學分不能小於 0。")
+        return False
+
     if not course.items:
         st.error("至少需要新增一個成績項目。")
         return False
@@ -95,10 +99,10 @@ def show_courses_page() -> None:
 
 def create_course_page() -> None:
     st.header("新增課程")
-    st.caption("建立一門課程，輸入學年、學期、目標分數與各項成績占比。")
+    st.caption("建立一門課程，輸入學年、學期、學分、目標分數與各項成績占比。")
 
     with st.container(border=True):
-        col1, col2 = st.columns([2, 1])
+        col1, col2, col3 = st.columns([2, 1, 1])
 
         with col1:
             course_name = st.text_input("課程名稱", key="new_course_name")
@@ -113,16 +117,25 @@ def create_course_page() -> None:
                 key="new_target_score"
             )
 
-        col3, col4 = st.columns(2)
-
         with col3:
+            credits = st.number_input(
+                "學分",
+                min_value=0.0,
+                value=0.0,
+                step=1.0,
+                key="new_credits"
+            )
+
+        col4, col5 = st.columns(2)
+
+        with col4:
             academic_year = st.text_input(
                 "學年",
                 value="未設定",
                 key="new_academic_year"
             )
 
-        with col4:
+        with col5:
             semester = st.selectbox(
                 "學期",
                 ["未設定", "第一學期", "第二學期", "暑修"],
@@ -139,7 +152,8 @@ def create_course_page() -> None:
         target_score=target_score,
         items=items,
         academic_year=academic_year,
-        semester=semester
+        semester=semester,
+        credits=credits
     )
 
     st.subheader("即時計算結果")
@@ -154,6 +168,7 @@ def create_course_page() -> None:
 
         st.session_state.new_items = []
         st.session_state.current_page = "查看課程"
+        st.session_state.selected_course_index = len(st.session_state.courses) - 1
 
         st.success("課程資料已儲存。")
         st.rerun()
@@ -161,7 +176,7 @@ def create_course_page() -> None:
 
 def edit_course_page() -> None:
     st.header("編輯課程")
-    st.caption("修改課程名稱、學年、學期、目標分數或成績項目。")
+    st.caption("修改課程名稱、學年、學期、學分、目標分數或成績項目。")
 
     courses = st.session_state.courses
 
@@ -174,15 +189,27 @@ def edit_course_page() -> None:
         for index, course in enumerate(courses)
     ]
 
+    default_index = 0
+
+    if st.session_state.editing_course_index is not None:
+        default_index = st.session_state.editing_course_index
+
+    if default_index < 0 or default_index >= len(course_options):
+        default_index = 0
+
     selected_course_label = st.selectbox(
         "請選擇要編輯的課程",
         course_options,
+        index=default_index,
         key="edit_course_selector"
     )
 
     selected_index = course_options.index(selected_course_label)
 
-    if st.session_state.editing_course_index != selected_index:
+    if (
+        st.session_state.editing_course_index != selected_index
+        or not st.session_state.edit_items
+    ):
         selected_course = courses[selected_index]
         st.session_state.editing_course_index = selected_index
         st.session_state.edit_items = [
@@ -193,7 +220,7 @@ def edit_course_page() -> None:
     course = courses[selected_index]
 
     with st.container(border=True):
-        col1, col2 = st.columns([2, 1])
+        col1, col2, col3 = st.columns([2, 1, 1])
 
         with col1:
             course_name = st.text_input(
@@ -212,16 +239,25 @@ def edit_course_page() -> None:
                 key=f"edit_target_score_{selected_index}"
             )
 
-        col3, col4 = st.columns(2)
-
         with col3:
+            credits = st.number_input(
+                "學分",
+                min_value=0.0,
+                value=float(course.credits),
+                step=1.0,
+                key=f"edit_credits_{selected_index}"
+            )
+
+        col4, col5 = st.columns(2)
+
+        with col4:
             academic_year = st.text_input(
                 "學年",
                 value=course.academic_year,
                 key=f"edit_academic_year_{selected_index}"
             )
 
-        with col4:
+        with col5:
             semester_options = ["未設定", "第一學期", "第二學期", "暑修"]
 
             if course.semester in semester_options:
@@ -250,7 +286,8 @@ def edit_course_page() -> None:
         target_score=target_score,
         items=items,
         academic_year=academic_year,
-        semester=semester
+        semester=semester,
+        credits=credits
     )
 
     st.subheader("修改後預覽")
@@ -264,6 +301,9 @@ def edit_course_page() -> None:
         save_courses(st.session_state.courses)
 
         st.session_state.current_page = "查看課程"
+        st.session_state.selected_course_index = selected_index
+        st.session_state.editing_course_index = None
+        st.session_state.edit_items = []
 
         st.success("課程修改已儲存。")
         st.rerun()
@@ -316,6 +356,11 @@ def delete_course_page() -> None:
         save_courses(st.session_state.courses)
 
         st.session_state.current_page = "查看課程"
+        st.session_state.editing_course_index = None
+        st.session_state.edit_items = []
+
+        if st.session_state.selected_course_index >= len(st.session_state.courses):
+            st.session_state.selected_course_index = 0
 
         st.success(f"已刪除課程：{deleted_course.name}")
         st.rerun()
