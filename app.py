@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import streamlit as st
 
 from storage import load_courses
@@ -81,6 +82,118 @@ def get_gpa_grouped_courses(courses: list) -> dict:
         grouped_courses[academic_year][semester].append(course)
 
     return grouped_courses
+
+
+def get_semester_sort_key(academic_year: str, semester: str) -> tuple:
+    semester_order = {
+        "第一學期": 1,
+        "第二學期": 2,
+        "暑修": 3,
+        "未設定": 99
+    }
+
+    digits = "".join(
+        char for char in academic_year
+        if char.isdigit()
+    )
+
+    if digits:
+        year_order = int(digits)
+    else:
+        year_order = 9999
+
+    return (
+        year_order,
+        semester_order.get(semester, 99),
+        academic_year,
+        semester
+    )
+
+
+def get_gpa_trend_rows(courses: list) -> list[dict]:
+    grouped_courses = get_gpa_grouped_courses(courses)
+    trend_rows = []
+
+    for academic_year in grouped_courses:
+        for semester in grouped_courses[academic_year]:
+            semester_courses = grouped_courses[academic_year][semester]
+            semester_credits, semester_gpa = calculate_gpa(semester_courses)
+
+            if semester_credits <= 0:
+                continue
+
+            trend_rows.append(
+                {
+                    "學期": f"{academic_year}｜{semester}",
+                    "GPA": round(semester_gpa, 2),
+                    "學分": semester_credits,
+                    "sort_key": get_semester_sort_key(
+                        academic_year,
+                        semester
+                    )
+                }
+            )
+
+    trend_rows.sort(key=lambda row: row["sort_key"])
+
+    for row in trend_rows:
+        del row["sort_key"]
+
+    return trend_rows
+
+
+def render_gpa_trend_chart(trend_rows: list[dict]) -> None:
+    plt.rcParams["font.sans-serif"] = [
+        "Microsoft JhengHei",
+        "Microsoft YaHei",
+        "SimHei"
+    ]
+
+    plt.rcParams["axes.unicode_minus"] = False
+
+    semesters = [
+        row["學期"]
+        for row in trend_rows
+    ]
+
+    gpas = [
+        row["GPA"]
+        for row in trend_rows
+    ]
+
+    fig, ax = plt.subplots(figsize=(10, 4.5))
+
+    ax.plot(
+        semesters,
+        gpas,
+        marker="o",
+        linewidth=2
+    )
+
+    for index, gpa in enumerate(gpas):
+        ax.text(
+            index,
+            gpa + 0.08,
+            f"{gpa:.2f}",
+            ha="center"
+        )
+
+    ax.set_xlabel("學期")
+    ax.set_ylabel("GPA")
+    ax.set_ylim(0, 4.3)
+
+    ax.grid(
+        True,
+        axis="y",
+        alpha=0.3
+    )
+
+    plt.xticks(rotation=0)
+    plt.tight_layout()
+
+    st.pyplot(fig)
+
+    plt.close(fig)
 
 
 def calculate_gpa(courses: list) -> tuple[float, float]:
@@ -214,6 +327,20 @@ def show_gpa_summary_page() -> None:
 
     with col5:
         st.metric("累積 GPA", f"{cumulative_gpa:.2f}")
+
+    st.divider()
+
+    st.subheader("GPA 趨勢圖")
+
+    trend_rows = get_gpa_trend_rows(courses)
+
+    if len(trend_rows) < 2:
+        st.info("至少需要兩個學期的 GPA 資料，才能顯示趨勢圖。")
+        return
+
+    render_gpa_trend_chart(trend_rows)
+
+    st.table(trend_rows)
 
 
 def render_sidebar() -> None:

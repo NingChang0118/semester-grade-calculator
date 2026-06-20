@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.2.0] - 2026-06-20
+
+### Added
+
+* 新增 GPA 趨勢圖
+* 新增學期 GPA 趨勢資料整理
+* 新增 GPA 趨勢圖數值標籤
+
+### Changed
+
+* GPA 趨勢圖改用 matplotlib 靜態圖表
+* GPA 趨勢資料依學年與學期順序排序
+* 學年排序支援擷取數字，提升資料輸入相容性
+
+### Fixed
+
+* 修正 GPA 趨勢圖中文字型顯示問題
+* 修正學期順序可能顯示異常的問題
+
 ## [v1.1.0] - 2026-06-19
 
 ### Added
